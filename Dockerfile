@@ -44,10 +44,10 @@ ADD conf/nginx.conf /etc/nginx/nginx.conf
 # nginx site conf
 RUN \
   mkdir -pv /etc/nginx/sites-available/ \
-    /etc/nginx/sites-enabled/
+    /etc/nginx/sites-enabled/ \
     /etc/nginx/ssl/ \
-    /var/www/html/
-  && rm -Rf /var/www/*
+    /var/www/html/ \
+  && rm -Rf /var/www/* \
   && mkdir -pv /var/www/html/
 
 ADD conf/nginx-site.conf /etc/nginx/sites-available/default.conf
@@ -76,7 +76,7 @@ RUN sed -i \
     -e "s/;listen.group = nobody/listen.group = nginx/g" \
     -e "s/listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm.sock/g" \
     -e "s/^;clear_env = no$/clear_env = no/" \
-    ${fpm_conf}
+    ${fpm_conf} \
   && cp -fv ${php_conf} /etc/php5/cli/php.ini \
   && find /etc/php5/fpm/conf.d/ -name "*.ini" \
       -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
